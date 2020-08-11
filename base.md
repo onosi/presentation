@@ -171,7 +171,7 @@ group_by(.spec.nodeName) | map({"nodeName": .[0].spec.nodeName,
 # 命令的コマンドを使うべきではない場合(2/3)
 ## ケーススタディ
 
-* 管理しているサービスの負荷が突然高騰したため、運用保守の担当者はリクエストに応答するサーバーの数を10に増やした。
+* 管理しているサービスの負荷が突然高騰したため、運用保守の担当者はリクエストに応答するサーバーの数を5→10に増やした。
     * その際、デプロイされているReplicaSetを直接変更し、バージョン管理されている設定ファイルの変更をおこなわなかった。
 * リリース担当者は、ReplicaSetの数が変更されていることに気づかずシステムのリリース作業をおこなってしまった。
 * 結果、リリース後Podのレプリカ数は10→5に変更されてしまい、システムは過負荷状態となり障害が発生してしまった。
@@ -228,7 +228,7 @@ Kubernetes1.18で削除される予定だったが、削除されていない。
 ```bash
 kubectl logs --tail=20 <pod名>　# 指定したPodの最新20行を表示するコマンド
 kubectl logs <pod名> --follow # 指定したPodのログ出力をターミナルに随時表示させるコマンド(短縮系:-f)
-kubectl logs --container <container名> # 指定したcontainerのログを表示するコマンド(短縮形:-c)
+kubectl logs <pod名> --container <container名> # 指定したcontainerのログを表示するコマンド(短縮形:-c)
 ```
 * コンテナの出力を直接したい場合には、`kubectl attach`コマンドを利用する。
     * 本コマンドは様々なサイトに用途がわからないと記載されている。
@@ -275,8 +275,8 @@ kubectl run busybox --image=busybox:1.28 --rm -it
 * wgetやnslookupなどのコマンドをクラスタ内で実行して、アプリケーションが受け取る結果を確認できると便利な場合がある。
 
 ```bash
-kubectl create deployment <Pod名> --image <イメージ名> # アプリケーションのデプロイ
-kubectl expose deployment <Pod名> --port 8888 # Deploymentを公開することでServiceを作成
+kubectl create deployment demo --image <イメージ名> # demoアプリケーションのデプロイ
+kubectl expose deployment demo --port 8888 # Deploymentを公開することでServiceを作成
 ```
 
 * demo ServiceにIPアドレスとdemoというDNS名が割り当てられていること、demoに対してHTTPアクセスできることを確認する。
